@@ -55,7 +55,14 @@
 			<section class="content row">
 			
 
-<button name="button" id="button" onclick="Playlist();" class="button">PLAY ></button>
+<audio id="audio">
+  <source src="" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<button name="button" id="button" onclick="Playlist();" class="button">PLAY</button>
+<button name="button" id="button" onclick="downvol();" class="button">-</button>
+<button name="button" id="button" onclick="upvol();" class="button">+</button>
 <p id="song_title"></p>
 
 <script>
@@ -174,9 +181,9 @@ function index(arr, compare) { // binary search, with custom compare function
 }
 
 function Playlist() {
-	//var audio = new Audio(songs[0]); //initalize
-	//var butt = document.getElementById("button");
-	//if (butt.innerHTML == "PLAY >") {
+	var audio = document.getElementById("audio"); //initalize
+	var butt = document.getElementById("button");
+	if (butt.innerHTML == "PLAY") {
 		setTimeout(function(){ 
 			var sum = durations.reduce(add, 0);
 			function add(a, b) {return a + b;}
@@ -202,7 +209,8 @@ function Playlist() {
 			var firstsong = songs[count];
 			var play_at = timeafterint - subtotal;
 
-			var audio = new Audio(songs[count]);
+			audio.src = songs[count];
+			//var audio = new Audio(songs[count]);
 			audio.play(); audio.pause();
 
 			audio.addEventListener('canplaythrough', function() {
@@ -216,7 +224,8 @@ function Playlist() {
 				audio.addEventListener("ended", function(){
 					if (count == songs.length)
 						count = 0;
-					audio = new Audio(songs[count]);
+					audio.src = songs[count];
+					//var audio = new Audio(songs[count]);
 					audio.currentTime = 0;
 					audio.play();
 					document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
@@ -226,13 +235,17 @@ function Playlist() {
 				});
 			};
 			looping();
-			//butt.innerHTML = "STOP";
+			butt.innerHTML = "STOP";
 		}, 1000);
-	//} else {
-	//	butt.onlick = audio.pause();
-		//butt.innerHTML = "PLAY >";
-	//}
+	}
+	else {
+		audio.pause();
+		butt.innerHTML = "PLAY";
+	}
 }
+
+function downvol(){audio.volume-=0.1};
+function upvol(){audio.volume+=0.1};
 </script>
 			</section>
 
