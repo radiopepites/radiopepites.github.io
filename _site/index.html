@@ -60,7 +60,7 @@
   Your browser does not support the audio element.
 </audio>
 
-<button name="button" id="button" onclick="Playlist();" class="button">PLAY</button>
+<button name="button" id="button" onclick="Playlist();" class="button">1</button>
 <button name="button" id="button" onclick="downvol();" class="button">-</button>
 <button name="button" id="button" onclick="upvol();" class="button">+</button>
 <p id="song_title"></p>
@@ -183,7 +183,7 @@ function index(arr, compare) { // binary search, with custom compare function
 function Playlist() {
 	var audio = document.getElementById("audio"); //initalize
 	var butt = document.getElementById("button");
-	if (butt.innerHTML == "PLAY") {
+	if (butt.innerHTML == "1") {
 		setTimeout(function(){ 
 			var sum = durations.reduce(add, 0);
 			function add(a, b) {return a + b;}
@@ -235,12 +235,12 @@ function Playlist() {
 				});
 			};
 			looping();
-			butt.innerHTML = "STOP";
+			butt.innerHTML = "0";
 		}, 1000);
 	}
 	else {
 		audio.pause();
-		butt.innerHTML = "PLAY";
+		butt.innerHTML = "1";
 	}
 }
 
