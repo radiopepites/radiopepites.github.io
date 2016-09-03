@@ -82,6 +82,10 @@ var songs = [];
 	
 
 	
+		songs.push("/music/The Brothers - Under The Skin.mp3");
+	
+
+	
 
 	
 
@@ -154,59 +158,64 @@ function index(arr, compare) { // binary search, with custom compare function
 }
 
 function Playlist() {
-	setTimeout(function(){ 
-		var sum = durations.reduce(add, 0);
-		function add(a, b) {return a + b;}
-		var sum = Math.round(sum)
-		var dt = new Date();
-		var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
-		var nloops = Math.floor(86400/sum)
-		var intervals = [];
-		for (var i = 0; i <= (nloops*sum); i+=sum) {
-		    intervals.push(i);
-		}
-		var i = index(intervals, function(x){return x-secs;});
-		var timeafterint = secs-intervals[i]
-		var deadsecs = 86400-nloops*sum
+	//var audio = new Audio(songs[0]); //initalize
+	//var butt = document.getElementById("button");
+	//if (butt.innerHTML == "PLAY >") {
+		setTimeout(function(){ 
+			var sum = durations.reduce(add, 0);
+			function add(a, b) {return a + b;}
+			var sum = Math.round(sum)
+			var dt = new Date();
+			var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
+			var nloops = Math.floor(86400/sum)
+			var intervals = [];
+			for (var i = 0; i <= (nloops*sum); i+=sum) {
+			    intervals.push(i);
+			}
+			var i = index(intervals, function(x){return x-secs;});
+			var timeafterint = secs-intervals[i]
+			var deadsecs = 86400-nloops*sum
 
-		var count = -1;
-		var subtotal = 0;
-		while(subtotal < timeafterint) {
-			count += 1
-			subtotal += durations[count];
-		}
-		subtotal -= durations[count];
-		var firstsong = songs[count];
-		var play_at = timeafterint - subtotal;
+			var count = -1;
+			var subtotal = 0;
+			while(subtotal < timeafterint) {
+				count += 1
+				subtotal += durations[count];
+			}
+			subtotal -= durations[count];
+			var firstsong = songs[count];
+			var play_at = timeafterint - subtotal;
 
-		var audio = new Audio(songs[count]);
-		audio.play(); audio.pause();
+			var audio = new Audio(songs[count]);
+			audio.play(); audio.pause();
 
-		audio.addEventListener('canplaythrough', function() {
-		    if(this.currentTime < play_at){this.currentTime = play_at;};
-		    this.play();
-		});
-		document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
-		count +=1;
-
-		var looping = function(){
-			audio.addEventListener("ended", function(){
-				if (count == songs.length)
-					count = 0;
-				audio = new Audio(songs[count]);
-				audio.currentTime = 0;
-				audio.play();
-				document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
-				count += 1;
-				//jingle if odd or divsible by three...
-				looping();
+			audio.addEventListener('canplaythrough', function() {
+			    if(this.currentTime < play_at){this.currentTime = play_at;};
+			    this.play();
 			});
-		};
-		looping();
-		var butt = document.getElementById("button");
-		//butt.innerHTML = "STOP";
-		butt.onlick = audio.pause();
-	}, 1000);
+			document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
+			count +=1;
+
+			var looping = function(){
+				audio.addEventListener("ended", function(){
+					if (count == songs.length)
+						count = 0;
+					audio = new Audio(songs[count]);
+					audio.currentTime = 0;
+					audio.play();
+					document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
+					count += 1;
+					//jingle if odd or divsible by three...
+					looping();
+				});
+			};
+			looping();
+			//butt.innerHTML = "STOP";
+		}, 1000);
+	//} else {
+	//	butt.onlick = audio.pause();
+		//butt.innerHTML = "PLAY >";
+	//}
 }
 </script>
 			</section>
