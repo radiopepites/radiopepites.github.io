@@ -55,7 +55,7 @@
 			<section class="content row">
 			
 
-<button onclick="Playlist();" class="button">PLAY ></button>
+<button name="button" id="button" onclick="Playlist();" class="button">PLAY ></button>
 <p id="song_title"></p>
 
 <script>
@@ -203,6 +203,9 @@ function Playlist() {
 			});
 		};
 		looping();
+		var butt = document.getElementById("button");
+		//butt.innerHTML = "STOP";
+		butt.onlick = audio.pause();
 	}, 1000);
 }
 </script>
