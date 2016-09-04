@@ -15,8 +15,7 @@ slug: index
   <source src="" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-
-<button name="button" id="button" onclick="Playlist();" class="button">1</button>
+<button name="button" id="button" onclick="Playlist();" class="button">&#x25B6;</button>
 <button name="button" id="button" onclick="downvol();" class="button">-</button>
 <button name="button" id="button" onclick="upvol();" class="button">+</button>
 <p id="song_title"></p>
@@ -74,10 +73,13 @@ function index(arr, compare) { // binary search, with custom compare function
     return l-1; 
 }
 
+var played = 0;
+
 function Playlist() {
 	var audio = document.getElementById("audio"); //initalize
 	var butt = document.getElementById("button");
-	if (butt.innerHTML == "1") {
+	var title = document.getElementById("song_title");
+	if (played == 0) {
 		setTimeout(function(){ 
 			var sum = durations.reduce(add, 0);
 			function add(a, b) {return a + b;}
@@ -104,37 +106,40 @@ function Playlist() {
 			var play_at = timeafterint - subtotal;
 
 			audio.src = songs[count];
-			//var audio = new Audio(songs[count]);
 			audio.play(); audio.pause();
 
 			audio.addEventListener('canplaythrough', function() {
 			    if(this.currentTime < play_at){this.currentTime = play_at;};
 			    this.play();
+			    play_at = 0;
 			});
-			document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
+			title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
 			count +=1;
 
-			var looping = function(){
-				audio.addEventListener("ended", function(){
+			function looping() {
+				audio.addEventListener("ended", function() {
+					audio.pause();
 					if (count == songs.length)
 						count = 0;
 					audio.src = songs[count];
-					//var audio = new Audio(songs[count]);
 					audio.currentTime = 0;
 					audio.play();
-					document.getElementById("song_title").innerHTML = songs[count].split('.')[0].replace("/music/", "");
+					title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
 					count += 1;
 					//jingle if odd or divsible by three...
 					looping();
 				});
 			};
 			looping();
-			butt.innerHTML = "0";
+			butt.innerHTML = "&#x025FC;";
+			played = 1;
 		}, 1000);
 	}
 	else {
 		audio.pause();
-		butt.innerHTML = "1";
+		butt.innerHTML = "&#x25B6;";
+		title.innerHTML = "";
+		played = 0;
 	}
 }
 

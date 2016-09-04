@@ -10,15 +10,16 @@ body {
 	margin: 0;
 }
 .button {
-    background-color:rgba(0,0,0,1);
+    background-color: rgba(0,0,0,1);
     display: table-cell; 
     vertical-align: top;
     height: 50px;
     width: 50px;
-    border: 5px solid #ff0000;
-    padding: 0px;    
-    color: #DAA520;
-    text-shadow: 2px 2px #ff0000;
+    border: 0px solid #ff0000;
+    padding-top: 0px;
+    position: relative;
+    left: 20px;
+    color: #ff0000;
     display: inline-block;
     font-size: 30px; 
     font-weight:bold;
@@ -28,12 +29,16 @@ body {
 p {
     background-color:rgba(0,0,0,1);
     color: #ff0000;
-    text-shadow: 2px 2px #DAA520;
+    position: relative;
+    left: 20px;
+    text-shadow: 1px 1px #DAA520;
 	display: inline-block;
 	display: table-cell; 
 	vertical-align: bottom;
     font-weight:bold;
 }
 h1 {
+    position: relative;
+    left: 0px;
     font-weight:bold;  
 }
