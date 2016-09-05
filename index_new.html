@@ -1,0 +1,143 @@
+---
+layout: layout
+title: Jekyll
+slug: index
+---
+{% for post in site.posts %}
+<div class="column-12 post">
+	<h1><a href="{{ post.url}}" title="{{ post.title }}">{{ post.title }}</a></h1>
+	{{ post.summary | markdownify }}
+	<p class="read-arrow"><a href="{{ post.url }}">Learn more. &rarr;</a></p>
+</div>
+{% endfor %}
+
+<script src="/audiojs/audio.min.js"></script>
+
+<audio id="audio">
+  <source src="/music/Aerosmith - Lord of the thighs.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<button name="button" id="button" onclick="Playlist();" class="button">&#x25B6;</button>
+<button name="button" id="button" onclick="downvol();" class="button">-</button>
+<button name="button" id="button" onclick="upvol();" class="button">+</button>
+<p id="song_title"></p>
+
+<script>
+var songs = [];
+{% for audio in site.static_files %}
+	{% if audio.path contains 'music' %}
+		songs.push("{{audio.path}}");
+	{% endif %}
+{% endfor %}
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}
+//shuffle(songs);
+
+var durations = new Array();
+var audioPlaylist = document.createElement("audio");
+audioPlaylist.preload = "metadata";
+var i = 0;
+function getDurations() {
+	var arraySize = songs.length;
+	if(i < arraySize){
+	    $(audioPlaylist)[0].src = songs[i];
+	    $(audioPlaylist).on('loadedmetadata',function(){
+	        durations[i]= Math.round($(audioPlaylist)[0].duration);
+	        i++;
+	        $(this).off('loadedmetadata');
+	        getDurations();
+	    });
+	}
+}
+getDurations();
+
+function index(arr, compare) { // binary search, with custom compare function
+    var l = 0,
+        r = arr.length - 1;
+    while (l <= r) {
+        var m = l + ((r - l) >> 1);
+        var comp = compare(arr[m]);
+        if (comp < 0) 
+            l = m + 1;
+        else if (comp > 0) 
+            r = m - 1;
+        else 
+            return m;
+    }
+    return l-1; 
+}
+
+function Playlist() {
+	var audio = document.getElementById("audio"); //initalize
+	var butt = document.getElementById("button");
+	var title = document.getElementById("song_title");
+	setTimeout(function(){ 
+		var sum = durations.reduce(add, 0);
+		function add(a, b) {return a + b;}
+		var sum = Math.round(sum)
+		var dt = new Date();
+		var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
+		var nloops = Math.floor(86400/sum)
+		var intervals = [];
+		for (var i = 0; i <= (nloops*sum); i+=sum) {
+		    intervals.push(i);
+		}
+		var i = index(intervals, function(x){return x-secs;});
+		var timeafterint = secs-intervals[i]
+		var deadsecs = 86400-nloops*sum
+
+		var count = -1;
+		var subtotal = 0;
+		while(subtotal < timeafterint) {
+			count += 1
+			subtotal += durations[count];
+		}
+		subtotal -= durations[count];
+		var firstsong = songs[count];
+		var play_at = timeafterint - subtotal;
+
+		audio.src = songs[count];
+		audio.play(); audio.pause();
+
+		//audio.addEventListener('canplaythrough', function() {
+		//    if(this.currentTime < play_at){this.currentTime = play_at;};
+		    //this.play();
+		    //play_at = 0;
+		//});
+		title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
+		count +=1;
+
+		audiojs.events.ready(function() {
+		    var as = audiojs.createAll();
+			document.getElementById('audio').currentTime=play_at;
+			function looping() {
+				audio.addEventListener("ended", function() {
+					audio.pause();
+					if (count == songs.length)
+						count = 0;
+					audio.src = songs[count];
+					audio.currentTime = 0;
+					audio.play();
+					title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
+					count += 1;
+					//jingle if odd or divsible by three...
+					looping();
+				});
+			};
+			looping(); 
+		});
+	}, 1000);
+}
+
+Playlist();
+function downvol(){audio.volume-=0.1};
+function upvol(){audio.volume+=0.1};
+</script>

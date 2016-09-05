@@ -36,6 +36,7 @@ p {
 	display: table-cell; 
 	vertical-align: bottom;
     font-weight:bold;
+    font-style: italic;
 }
 h1 {
     position: relative;
@@ -43,12 +44,11 @@ h1 {
     font-weight:bold;  
 }
 
-.audiojs { height: 22px; background: #404040;
-background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #444), color-stop(0.5, #555), color-stop(0.51, #444), color-stop(1, #444));
-background-image: -moz-linear-gradient(center top, #444 0%, #555 50%, #444 51%, #444 100%);
+.audiojs { height: 50px; background: black; width: 50px;
 -webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); -moz-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
--o-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); }
-.audiojs .play-pause { width: 15px; height: 20px; padding: 0px 8px 0px 0px; }
+-o-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);     position: relative;
+    left: 20px;}
+.audiojs .play-pause { width: 50px; height: 50px; padding: 0px 8px 0px 0px; }
 .audiojs p { width: 25px; height: 20px; margin: -3px 0px 0px -1px; }
 .audiojs .scrubber { display:none; }
 .audiojs .progress { display:none; }
