@@ -57,7 +57,7 @@
 
 <script src="/audiojs/audio.min.js"></script>
 
-<audio id="audio" preload="none">
+<audio id="audio">
   <source src="/music/Aerosmith - Lord of the thighs.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
@@ -191,6 +191,7 @@ var played = 0;
 
 audiojs.events.ready(function() {
     var as = audiojs.createAll();
+    $( "a" ).click(Playlist())
 });
 
 function Playlist() {

@@ -62,8 +62,8 @@
   Your browser does not support the audio element.
 </audio>
 <button name="button" id="button" onclick="Playlist();" class="button">&#x25B6;</button>
-<button name="button" id="button" onclick="downvol();" class="button">-</button>
-<button name="button" id="button" onclick="upvol();" class="button">+</button>
+<button name="button2" id="button2" onclick="downvol();" class="button">-</button>
+<button name="button3" id="button3" onclick="upvol();" class="button">+</button>
 <p id="song_title"></p>
 
 <script>
@@ -187,49 +187,54 @@ function index(arr, compare) { // binary search, with custom compare function
     return l-1; 
 }
 
+var played = 0;
+
+audiojs.events.ready(function() {
+    var as = audiojs.createAll();
+    $( "a" ).click(Playlist();)
+});
+
 function Playlist() {
 	var audio = document.getElementById("audio"); //initalize
 	var butt = document.getElementById("button");
 	var title = document.getElementById("song_title");
-	setTimeout(function(){ 
-		var sum = durations.reduce(add, 0);
-		function add(a, b) {return a + b;}
-		var sum = Math.round(sum)
-		var dt = new Date();
-		var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
-		var nloops = Math.floor(86400/sum)
-		var intervals = [];
-		for (var i = 0; i <= (nloops*sum); i+=sum) {
-		    intervals.push(i);
-		}
-		var i = index(intervals, function(x){return x-secs;});
-		var timeafterint = secs-intervals[i]
-		var deadsecs = 86400-nloops*sum
+	if (played == 0) {
+		setTimeout(function(){ 
+			var sum = durations.reduce(add, 0);
+			function add(a, b) {return a + b;}
+			var sum = Math.round(sum)
+			var dt = new Date();
+			var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
+			var nloops = Math.floor(86400/sum)
+			var intervals = [];
+			for (var i = 0; i <= (nloops*sum); i+=sum) {
+			    intervals.push(i);
+			}
+			var i = index(intervals, function(x){return x-secs;});
+			var timeafterint = secs-intervals[i]
+			var deadsecs = 86400-nloops*sum
 
-		var count = -1;
-		var subtotal = 0;
-		while(subtotal < timeafterint) {
-			count += 1
-			subtotal += durations[count];
-		}
-		subtotal -= durations[count];
-		var firstsong = songs[count];
-		var play_at = timeafterint - subtotal;
+			var count = -1;
+			var subtotal = 0;
+			while(subtotal < timeafterint) {
+				count += 1
+				subtotal += durations[count];
+			}
+			subtotal -= durations[count];
+			var firstsong = songs[count];
+			var play_at = timeafterint - subtotal;
 
-		audio.src = songs[count];
-		audio.play(); audio.pause();
+			audio.src = songs[count];
+			audio.play(); audio.pause();
 
-		//audio.addEventListener('canplaythrough', function() {
-		//    if(this.currentTime < play_at){this.currentTime = play_at;};
-		    //this.play();
-		    //play_at = 0;
-		//});
-		title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
-		count +=1;
+			audio.addEventListener('canplaythrough', function() {
+			    if(this.currentTime < play_at){this.currentTime = play_at;};
+			    this.play();
+			    play_at = 0;
+			});
+			title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
+			count +=1;
 
-		audiojs.events.ready(function() {
-		    var as = audiojs.createAll();
-			document.getElementById('audio').currentTime=play_at;
 			function looping() {
 				audio.addEventListener("ended", function() {
 					audio.pause();
@@ -244,12 +249,18 @@ function Playlist() {
 					looping();
 				});
 			};
-			looping(); 
-		});
-	}, 1000);
+			looping();
+			butt.innerHTML = "&#x025FC;";
+			played = 1;
+		}, 1000);
+	}
+	else {
+		audio.pause();
+		butt.innerHTML = "&#x25B6;";
+		title.innerHTML = "";
+		played = 0;
+	}
 }
-
-Playlist();
 function downvol(){audio.volume-=0.1};
 function upvol(){audio.volume+=0.1};
 </script>
