@@ -226,12 +226,11 @@ function Playlist() {
 			audio.src = songs[count];
 			audio.play(); audio.pause();
 
-			//audio.addEventListener('canplaythrough', function() {
-			//    if(this.currentTime < play_at){this.currentTime = play_at;};
-			//    this.play();
-			//    play_at = 0;
-			//});
-			audio.currentTime = play_at;
+			audio.addEventListener('canplaythrough', function() {
+			    if(this.currentTime < play_at){this.currentTime = play_at;};
+			    this.play();
+			    play_at = 0;
+			});
 			title.innerHTML = songs[count].split('.')[0].replace("/music/", "");
 			count +=1;
 
