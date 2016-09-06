@@ -79,7 +79,7 @@ var played = 0;
 
 audiojs.events.ready(function() {
     var as = audiojs.createAll();
-    $( "a" ).click(Playlist())
+	$('.audiojs .play-pause').on('click', function(){Playlist()});
 });
 
 function Playlist() {
@@ -140,7 +140,7 @@ function Playlist() {
 			looping();
 			butt.innerHTML = "&#x025FC;";
 			played = 1;
-		}, 1000);
+		}, 0);
 	}
 	else {
 		audio.pause();
