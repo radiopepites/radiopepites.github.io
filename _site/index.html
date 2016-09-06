@@ -57,19 +57,13 @@
 
 <script src="/audiojs/audio.min.js"></script>
 
-<script>
-  audiojs.events.ready(function() {
-    var as = audiojs.createAll();
-  });
-</script>
-
 <audio id="audio">
   <source src="/music/Aerosmith - Lord of the thighs.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 <button name="button" id="button" onclick="Playlist();" class="button">&#x25B6;</button>
-<button name="button" id="button" onclick="downvol();" class="button">-</button>
-<button name="button" id="button" onclick="upvol();" class="button">+</button>
+<button name="button2" id="button2" onclick="downvol();" class="button">-</button>
+<button name="button3" id="button3" onclick="upvol();" class="button">+</button>
 <p id="song_title"></p>
 
 <script>
@@ -194,6 +188,13 @@ function index(arr, compare) { // binary search, with custom compare function
 }
 
 var played = 0;
+
+audiojs.events.ready(function() {
+	$('a').click(function(e) {
+		$("button").trigger('click');
+	});
+    var as = audiojs.createAll();
+});
 
 function Playlist() {
 	var audio = document.getElementById("audio"); //initalize
