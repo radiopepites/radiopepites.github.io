@@ -90,22 +90,22 @@ function Playlist() {
 		setTimeout(function(){ 
 			var sum = durations.reduce(add, 0);
 			function add(a, b) {return a + b;}
-			var sum = Math.round(sum)
+			var sum = Math.round(sum);
 			var dt = new Date();
 			var secs = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
-			var nloops = Math.floor(86400/sum)
+			var nloops = Math.floor(86400/sum);
 			var intervals = [];
 			for (var i = 0; i <= (nloops*sum); i+=sum) {
 			    intervals.push(i);
 			}
 			var i = index(intervals, function(x){return x-secs;});
-			var timeafterint = secs-intervals[i]
-			var deadsecs = 86400-nloops*sum
+			var timeafterint = secs-intervals[i];
+			var deadsecs = 86400-nloops*sum;
 
 			var count = -1;
 			var subtotal = 0;
 			while(subtotal < timeafterint) {
-				count += 1
+				count += 1;
 				subtotal += durations[count];
 			}
 			subtotal -= durations[count];
@@ -126,8 +126,7 @@ function Playlist() {
 			function looping() {
 				audio.addEventListener("ended", function() {
 					audio.pause();
-					if (count == songs.length)
-						count = 0;
+					if (count == songs.length) {count = 0;}
 					audio.src = songs[count];
 					audio.currentTime = 0;
 					audio.play();
