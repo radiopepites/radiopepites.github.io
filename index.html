@@ -112,7 +112,7 @@ function Playlist() {
 			var play_at = timeafterint - subtotal;
 
 			audio.src = songs[count];
-			//audio.play(); audio.pause();
+			audio.play(); audio.pause();
 
 			audio.addEventListener('canplaythrough', function() {
 			    if(this.currentTime < play_at){this.currentTime = play_at;};
