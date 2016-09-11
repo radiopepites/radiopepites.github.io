@@ -84,6 +84,7 @@ audiojs.events.ready(function() {
 
 function Playlist() {
 	var audio = document.getElementById("audio"); //initalize
+	audio.volume=1;
 	var butt = document.getElementById("button");
 	var title = document.getElementById("song_title");
 	if (played == 0) {
@@ -147,6 +148,8 @@ function Playlist() {
 		played = 0;
 	}
 }
+Playlist();
+audio.volume=0;
 function downvol(){audio.volume-=0.1};
 function upvol(){audio.volume+=0.1};
 </script>
